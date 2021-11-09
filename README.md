@@ -1,4 +1,4 @@
-# Ecommerce Backend API (Node.js, Express.js, MongoDb)
+# Ecommerce Backend REST API (Node.js, Express.js, MongoDb)
 Ecommerce backend development using NodeJs, ExpressJs, MongoDB, React, MEARN Stack, MVC, MVVM, API
 
 ## Instalation Pre-Requirements
