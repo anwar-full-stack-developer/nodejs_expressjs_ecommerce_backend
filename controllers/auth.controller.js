@@ -24,9 +24,7 @@ let AuthController = {
    */
   login: async function (req, res, next) {
     const body = req.body;
-    if (!(body.email && body.password)) {
-      return res.jsonValidationError({ error: "Data not formatted properly" });
-    }
+
     try {
       const user = await User.findOne({ email: body.email });
       if (!user)
@@ -73,13 +71,10 @@ let AuthController = {
   register: async function (req, res, next) {
     const body = req.body;
 
-    if (!(body.email && body.password && body.user_type && body.first_name)) {
-      return res.jsonValidationError({ error: "Data not formatted properly" });
-    }
     try {
       let user = await User.findOne({ email: body.email });
       if (user)
-        return res.jsonValidationError({ error: "Email already exist" });
+        return res.jsonValidationError({ error: {email: {message: "Email already exist"}} });
 
       user = new User(body);
       const salt = await bcrypt.genSalt(10);
@@ -92,6 +87,7 @@ let AuthController = {
       return res.jsonCreated({
         message: "User registration successfull",
         result: {
+          message: "User registration successfull",
           user: user,
         },
       });
@@ -129,11 +125,12 @@ let AuthController = {
       }
       const salt = await bcrypt.genSalt(10);
       const reset_str = await bcrypt.genSalt(10);
-      user.password_reset_token = await bcrypt.hash(reset_str, salt);
+      user.password_reset_token = (await bcrypt.hash(reset_str, salt)).replace("/","");
       await user.save();
       return res.jsonUpdated({
-        message: "Password reset token has been generated",
+        message: "Password reset token has been generated. Please check your email.",
         password_reset_token: user.password_reset_token,
+        additionalMessage: "Password reset token will not be shown in production mode!"
       });
     } catch (err) {
       return res.jsonInternalServerError({ error: err });

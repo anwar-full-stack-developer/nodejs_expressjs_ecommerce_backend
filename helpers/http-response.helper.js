@@ -49,8 +49,8 @@ const httpResponseHelper = {
       .status(HttpStatusCodes.UPDATED)
       .send({
         statusCode: HttpStatusCodes.UPDATED,
-        message: "Data has been updated",
-        ...data,
+        message: data?.message || "Data has been updated",
+        result: {...data},
       });
   },
 
@@ -70,13 +70,15 @@ const httpResponseHelper = {
       .status(error.statusCode)
       .send({
         statusCode: error.statusCode,
-        message: message ? message : "Authentication/Login required",
+        error: { message: message ? message : "Authentication/Login required" },
         // ...data,
       });
   },
 
   jsonValidationError: function (data) {
-    const message = data.message ? data.message : "Request params or form validation error";
+    const message = data.message
+      ? data.message
+      : "Request params or form validation error";
     const error = new ApiValidaionError(message);
     return this.contentType("application/json")
       .status(error.statusCode)
@@ -86,7 +88,7 @@ const httpResponseHelper = {
         msg: message,
         ...data,
       });
-  },  
+  },
 };
 
 module.exports = httpResponseHelper;

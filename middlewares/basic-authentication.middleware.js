@@ -38,7 +38,7 @@ const basicAuthentication = {
           next();
         } else {
           return res.jsonAuthenticationError(
-            "Invalid login credential/token. Require admin to login"
+            "Invalid login credential/token."
           );
         }
       } catch (error) {
@@ -46,7 +46,7 @@ const basicAuthentication = {
       }
     } else {
       return res.jsonAuthenticationError(
-        "Invalid login credential/token. Require admin to login"
+        "Invalid login credential/token."
       );
     }
   },

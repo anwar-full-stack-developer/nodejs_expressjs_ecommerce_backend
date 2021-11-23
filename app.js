@@ -6,7 +6,7 @@ var upload = multer();
 var express = require("express");
 const cors = require("cors");
 require("dotenv").config({ path: "./config.env" });
-// console.log(process.env.DATABASE_DEFAULT_CONNECTION_STRING);
+// console.log(process.env);
 const port = process.env.PORT || 5000;
 var path = require("path");
 var cookieParser = require("cookie-parser");
@@ -69,7 +69,7 @@ app.use("/api/v1/auth/basic/", authRouter);
 app.use("/api/v1/products/", productRouter);
 app.use("/api/v1/category/", categoryRouter);
 app.use("/api/v1/brands/", brandRouter);
-app.use("/", indexRouter);
+app.use("/api/v1/", indexRouter);
 app.use("/api/v1/users/", userRouter);
 
 // catch 404 and forward to error handler
